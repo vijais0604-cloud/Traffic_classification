@@ -1,13 +1,14 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import mutual_info_classif
 from top40 import TOP40
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report,f1_score,confusion_matrix
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import os
 import joblib
 from data_loading import X_test, X_train, y_test,y_train
 import time
+import matplotlib.pyplot as plt
 
 # Creating a file to store the top40 columns if it doesn't exist
 path1 = "/Users/vijais/Documents/vs code/traffic_classification/top40.py"
@@ -28,41 +29,73 @@ X_test_scaled = scaler.transform(X_test)
 
 scaler1 = StandardScaler()
 X_train_mi_scaled = scaler1.fit_transform(X_train[TOP40])
-X_test_mi_scaled =scaler1.fit_transform(X_test[TOP40])
+X_test_mi_scaled =scaler1.transform(X_test[TOP40])
 
 
 
 
 
 # Training the LogisticRegression model with scaled features and loading model
-
-# model_scaled = LogisticRegression(max_iter=200)
-# model_scaled.fit(X_train_scaled, y_train)
+start_train = time.time()
+model_scaled = LogisticRegression(max_iter=200)
+model_scaled.fit(X_train_scaled, y_train)
+end_train = time.time() - start_train
 # joblib.dump(model_scaled, "logistic_regression_model_scaled.pkl")
-# start_time1 = time.time()
 
-model_scaled=joblib.load("logistic_regression_model_scaled.pkl")
+# model_scaled=joblib.load("logistic_regression_model_scaled.pkl")
 
 # Predicting and evaluating the model with scaled features
+start_test = time.time()
 y_pred_scaled = model_scaled.predict(X_test_scaled)
-# end_time1 = time.time()                                                                                                                                               
+end_test = time.time() - start_test                                                                                                                                         
 print("Logistic Regression Model (Scaled Features)")
 print(classification_report(y_test, y_pred_scaled))
 
-
+f1_all=(f1_score(y_test,y_pred_scaled))
 
 # Training the LogisticRegression model with top40 scaled features and loading model
 
-
-# model_scaled_mi = LogisticRegression(max_iter=200)
-# model_scaled_mi.fit(X_train_mi_scaled, y_train)
+start_train1 = time.time()
+model_scaled_mi = LogisticRegression(max_iter=200)
+model_scaled_mi.fit(X_train_mi_scaled, y_train)
 # joblib.dump(model_scaled_mi, "logistic_regression_model_mi_scaled.pkl")
-# start_time = time.time()
+end_train1 = time.time() - start_train1
 
-model_scaled_mi=joblib.load("logistic_regression_model_mi_scaled.pkl")
+# model_scaled_mi=joblib.load("logistic_regression_model_mi_scaled.pkl")
 
 # Predicting and evaluating the model with scaled features
+start_test1 = time.time()
 y_pred_scaled_mi = model_scaled_mi.predict(X_test_mi_scaled)
-# end_time = time.time()
+end_test1= time.time() - start_test1
 print("Logistic Regression Model with top 40 (Scaled Features) ")
 print(classification_report(y_test, y_pred_scaled_mi))
+f1_top40=(f1_score(y_test,y_pred_scaled_mi))
+
+
+results = pd.DataFrame({
+    "Feature_Set": ["All Features", "Top40"],
+    "Train_Time": [end_train, end_train1],
+    "Test_Time": [end_test, end_test1],
+    "F1_Score": [f1_all, f1_top40]
+})
+
+print(results)
+
+
+plt.figure()
+plt.bar(results["Feature_Set"], results["Train_Time"])
+plt.title("Training Time Comparison")
+plt.ylabel("Time (seconds)")
+plt.show()
+
+plt.figure()
+plt.bar(results["Feature_Set"], results["Test_Time"])
+plt.title("Testing Time Comparison")
+plt.ylabel("Time (seconds)")
+plt.show()
+
+plt.figure()
+plt.bar(results["Feature_Set"], results["F1_Score"])
+plt.title("F1 Score Comparison")
+plt.ylabel("F1 Score")
+plt.show()
