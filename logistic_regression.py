@@ -82,20 +82,18 @@ results = pd.DataFrame({
 print(results)
 
 
-plt.figure()
-plt.bar(results["Feature_Set"], results["Train_Time"])
-plt.title("Training Time Comparison")
-plt.ylabel("Time (seconds)")
-plt.show()
+fig , ax = plt.subplots(3,1,figsize=(4,6))
+ax[0].bar(results["Feature_Set"],results["Train_Time"],width=0.2)
+ax[0].set_title("Training time comparsion")
+ax[0].set_ylabel("Time (seconds)")
 
-plt.figure()
-plt.bar(results["Feature_Set"], results["Test_Time"])
-plt.title("Testing Time Comparison")
-plt.ylabel("Time (seconds)")
-plt.show()
+ax[1].bar(results["Feature_Set"],results["Test_Time"],width=0.2)
+ax[1].set_title("Testing time comparsion")
+ax[1].set_ylabel("Time (seconds)")
 
-plt.figure()
-plt.bar(results["Feature_Set"], results["F1_Score"])
-plt.title("F1 Score Comparison")
-plt.ylabel("F1 Score")
+ax[2].bar(results["Feature_Set"],results["F1_Score"],width=0.2)
+ax[2].set_title("F1 score comparsion")
+ax[2].set_ylabel("F1 score")
+
+plt.tight_layout()
 plt.show()
