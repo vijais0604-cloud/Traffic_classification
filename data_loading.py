@@ -173,8 +173,8 @@ df["isattack"]=df["label"].apply(lambda x: 0 if x == "BENIGN" else 1)
 # Splitting the dataset for training and testing 
 count_attack = df["isattack"].sum()
 count_benign = len(df) - count_attack
-print(f"Number of attack samples: {count_attack}")
-print(f"Number of benign samples: {count_benign}")
+# print(f"Number of attack samples: {count_attack}")
+# print(f"Number of benign samples: {count_benign}")
 X = df.drop(["label", "isattack"], axis=1)
 y = df["isattack"]
 
