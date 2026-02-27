@@ -26,6 +26,7 @@ if not os.path.exists(path1):
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
+
 scaler1 = StandardScaler()
 X_train_mi_scaled = scaler1.fit_transform(X_train[TOP40])
 X_test_mi_scaled =scaler1.transform(X_test[TOP40])
