@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report, f1_score
 import time
 import matplotlib.pyplot as plt
 
+
 # Using only top 40 features for models like Random Forest
 X_train_40 = X_train[TOP40]
 X_test_40 = X_test[TOP40]
@@ -30,33 +31,32 @@ rf_classifier1 = RandomForestClassifier(
 )
 
 start_train=time.time()
-# rf_classifier=joblib.load("rf_classifier_40.pkl")
 rf_classifier.fit(X_train_40, y_train)
 end_train=time.time() - start_train
 # joblib.dump(rf_classifier, "rf_classifier_40.pkl")
-# Make predictions
+# rf_classifier=joblib.load("rf_classifier_40.pkl")
 start_test=time.time()
 y_pred = rf_classifier.predict(X_test_40)
-end_test=time.time() - start_train
+end_test=time.time() - start_test
 # Evaluate the model
 # For Classification:
 # accuracy = accuracy_score(y_test, y_pred)
 # print(f'Accuracy: {accuracy}')
-print("Random forest classification report")
 print(classification_report(y_test, y_pred))
 f1_all=f1_score(y_test,y_pred)
 
 
 # Train the model
 start_train1=time.time()
-# rf_classifier=joblib.load("rf_classifier_40.pkl")
 rf_classifier1.fit(X_train_40, y_train)
 end_train1=time.time() - start_train1
 # joblib.dump(rf_classifier, "rf_classifier_40.pkl")
+# rf_classifier1=joblib.load("rf_classifier_40.pkl")
+
 # Make predictions
 start_test1=time.time()
 y_pred1 = rf_classifier1.predict(X_test_40)
-end_test1=time.time() - start_train1
+end_test1=time.time() - start_test1
 # Evaluate the model
 # For Classification:
 # accuracy = accuracy_score(y_test, y_pred)
