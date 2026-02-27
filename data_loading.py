@@ -171,8 +171,8 @@ df["isattack"]=df["label"].apply(lambda x: 0 if x == "BENIGN" else 1)
 # print(df.describe())
 # print(df.shape)
 # Splitting the dataset for training and testing 
-count_attack = df["isattack"].sum()
-count_benign = len(df) - count_attack
+# count_attack = df["isattack"].sum()
+# count_benign = len(df) - count_attack
 # print(f"Number of attack samples: {count_attack}")
 # print(f"Number of benign samples: {count_benign}")
 X = df.drop(["label", "isattack"], axis=1)
@@ -181,3 +181,4 @@ y = df["isattack"]
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, stratify=y, random_state=42
 )
+# print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
