@@ -6,8 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 import time
 import matplotlib.pyplot as plt
-
-
+import os
 # Using only top 40 features for models like Random Forest
 X_train_40 = X_train[TOP40]
 X_test_40 = X_test[TOP40]
@@ -66,23 +65,26 @@ print(classification_report(y_test, y_pred1))
 f1_top40=f1_score(y_test,y_pred1)
 
 results = pd.DataFrame({
-    "Feature_Set": ["All Features", "Top40"],
+    "Models": ["RF_all", "RF_top40 "],
     "Train_Time": [end_train, end_train1],
     "Test_Time": [end_test, end_test1],
     "F1_Score": [f1_all, f1_top40]
 })
+if not os.path.exists("random_forest_results.csv"):
+    results.to_csv("random_forest_results.csv", index=False)
+
 print(results)
 
 fig , ax = plt.subplots(3,1,figsize=(4,4))
-ax[0].bar(results["Feature_Set"],results["Train_Time"],width=0.2)
+ax[0].bar(results["Models"],results["Train_Time"],width=0.2)
 ax[0].set_title("Training time comparsion")
 ax[0].set_ylabel("Time (seconds)")
 
-ax[1].bar(results["Feature_Set"],results["Test_Time"],width=0.2)
+ax[1].bar(results["Models"],results["Test_Time"],width=0.2)
 ax[1].set_title("Testing time comparsion")
 ax[1].set_ylabel("Time (seconds)")
 
-ax[2].bar(results["Feature_Set"],results["F1_Score"],width=0.2)
+ax[2].bar(results["Models"],results["F1_Score"],width=0.2)
 ax[2].set_title("F1 score comparsion")
 ax[2].set_ylabel("F1 score")
 

@@ -169,88 +169,88 @@ else:
 #separating attacks and normal traffic
 df["isattack"]=df["label"].apply(lambda x: 0 if x == "BENIGN" else 1)
 
-print(df.info())
-print(df.describe())
-print(df.shape)
-# Splitting the dataset for training and testing 
-count_attack = df["isattack"].sum()
-count_benign = len(df) - count_attack
-print(f"Number of attack samples: {count_attack}")
-print(f"Number of benign samples: {count_benign}")
+# print(df.info())
+# print(df.describe())
+# print(df.shape)
+# # Splitting the dataset for training and testing 
+# count_attack = df["isattack"].sum()
+# count_benign = len(df) - count_attack
+# print(f"Number of attack samples: {count_attack}")
+# print(f"Number of benign samples: {count_benign}")
 X = df.drop(["label", "isattack"], axis=1)
 y = df["isattack"]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, stratify=y, random_state=42
 )
-print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+# print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
 
-#Data Visualization
-# Visualize class distribution
-class_counts = y.value_counts()
-plt.figure(figsize=(6,4))
-plt.bar(class_counts.index.astype(str), class_counts.values)
-plt.title("Class Distribution")
-plt.xlabel("Class (0 = Benign, 1 = Attack)")
-plt.ylabel("Number of Samples")
-plt.grid(axis="y", linestyle="--", alpha=0.5)
-plt.tight_layout()
-plt.show()
+# #Data Visualization
+# # Visualize class distribution
+# class_counts = y.value_counts()
+# plt.figure(figsize=(6,4))
+# plt.bar(class_counts.index.astype(str), class_counts.values)
+# plt.title("Class Distribution")
+# plt.xlabel("Class (0 = Benign, 1 = Attack)")
+# plt.ylabel("Number of Samples")
+# plt.grid(axis="y", linestyle="--", alpha=0.5)
+# plt.tight_layout()
+# plt.show()
 
 
-# Visualize distribution of Flow Duration
-s=StandardScaler()
-scaled=s.fit_transform(X_train[["flow_duration"]])
-plt.figure(figsize=(6,4))
-plt.hist(scaled, bins=60)
-plt.title("Distribution of Flow Duration (Standardized)")
-plt.xlabel("Flow Duration (Standardized)")
-plt.ylabel("Frequency")
-plt.grid(alpha=0.5)
-plt.tight_layout()
-plt.show()
+# # Visualize distribution of Flow Duration
+# s=StandardScaler()
+# scaled=s.fit_transform(X_train[["flow_duration"]])
+# plt.figure(figsize=(6,4))
+# plt.hist(scaled, bins=60)
+# plt.title("Distribution of Flow Duration (Standardized)")
+# plt.xlabel("Flow Duration (Standardized)")
+# plt.ylabel("Frequency")
+# plt.grid(alpha=0.5)
+# plt.tight_layout()
+# plt.show()
 
-# Visualize distribution of Average Packet Size
-plt.figure(figsize=(6,4))
-plt.hist(X["average_packet_size"], bins=60)
-plt.title("Distribution of Average Packet Size")
-plt.xlabel("Average Packet Size")
-plt.ylabel("Frequency")
-plt.grid(alpha=0.5)
-plt.tight_layout()
-plt.show()
-
-
-
-
-
-# Visualize distribution of Flow Bytes per Second by class
-benign = X[y == 0]["flow_bytes_per_s"]
-attack = X[y == 1]["flow_bytes_per_s"]
-
-plt.figure(figsize=(6,4))
-plt.boxplot([benign, attack], labels=["Benign", "Attack"])
-plt.title("Flow Bytes per Second by Class")
-plt.ylabel("Flow Bytes per Second")
-plt.grid(axis="y", alpha=0.5)
-plt.tight_layout()
-plt.show()
+# # Visualize distribution of Average Packet Size
+# plt.figure(figsize=(6,4))
+# plt.hist(X["average_packet_size"], bins=60)
+# plt.title("Distribution of Average Packet Size")
+# plt.xlabel("Average Packet Size")
+# plt.ylabel("Frequency")
+# plt.grid(alpha=0.5)
+# plt.tight_layout()
+# plt.show()
 
 
 
-# Compute variance for each feature
-variances = X.var().sort_values(ascending=False)
 
-top_n = 20
-top_variances = variances.head(top_n)
 
-plt.figure(figsize=(7,5))
-plt.barh(range(top_n), top_variances.values)
-plt.yticks(range(top_n), top_variances.index)
-plt.xlabel("Variance")
-plt.title("Top 20 Features by Variance")
-plt.gca().invert_yaxis()   # Highest variance at top
-plt.grid(axis="x", linestyle="--", alpha=0.5)
-plt.tight_layout()
-plt.show()
+# # Visualize distribution of Flow Bytes per Second by class
+# benign = X[y == 0]["flow_bytes_per_s"]
+# attack = X[y == 1]["flow_bytes_per_s"]
+
+# plt.figure(figsize=(6,4))
+# plt.boxplot([benign, attack], labels=["Benign", "Attack"])
+# plt.title("Flow Bytes per Second by Class")
+# plt.ylabel("Flow Bytes per Second")
+# plt.grid(axis="y", alpha=0.5)
+# plt.tight_layout()
+# plt.show()
+
+
+
+# # Compute variance for each feature
+# variances = X.var().sort_values(ascending=False)
+
+# top_n = 20
+# top_variances = variances.head(top_n)
+
+# plt.figure(figsize=(7,5))
+# plt.barh(range(top_n), top_variances.values)
+# plt.yticks(range(top_n), top_variances.index)
+# plt.xlabel("Variance")
+# plt.title("Top 20 Features by Variance")
+# plt.gca().invert_yaxis()   # Highest variance at top
+# plt.grid(axis="x", linestyle="--", alpha=0.5)
+# plt.tight_layout()
+# plt.show()

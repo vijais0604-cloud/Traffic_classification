@@ -7,7 +7,7 @@ from top40 import TOP40
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import os
 # ============================================
 # Model 1: LinearSVC with all features
 # ============================================
@@ -80,19 +80,22 @@ print(classification_report(y_test, y_pred1))
 f1_40=(f1_score(y_test,y_pred1))
 
 results = pd.DataFrame({
-    "Feature_Set": ["All Features", "Top40"],
+    "Models": ["SVM_all", "SVM_top40"],
     "Train_Time": [end_train, end_train1],
     "Test_Time": [end_test, end_test1],
     "F1_Score": [f1_all, f1_40]
 })
+if not os.path.exists("svm_linear_results.csv"):
+    results.to_csv("svm_linear_results.csv", index=False)
+
 print(results)
  
 fig , axs = plt.subplots(3,1,figsize=(4,6))
-axs[0].bar(results["Feature_Set"],results["Train_Time"],width=0.2)
+axs[0].bar(results["Models"],results["Train_Time"],width=0.2)
 axs[0].set_title("Training Time")
-axs[1].bar(results["Feature_Set"],results["Test_Time"],width=0.2)
+axs[1].bar(results["Models"],results["Test_Time"],width=0.2)
 axs[1].set_title("Testing Time")
-axs[2].bar(results["Feature_Set"],results["F1_Score"],width=0.2)
+axs[2].bar(results["Models"],results["F1_Score"],width=0.2)
 axs[2].set_title("F1 Score")
 plt.tight_layout()
 plt.show()  

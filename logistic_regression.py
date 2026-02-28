@@ -10,6 +10,7 @@ from data_loading import X_test, X_train, y_test,y_train
 import time
 import matplotlib.pyplot as plt
 
+
 # Creating a file to store the top40 columns if it doesn't exist
 path1 = "/Users/vijais/Documents/vs code/traffic_classification/top40.py"
 if not os.path.exists(path1):
@@ -73,25 +74,27 @@ f1_top40=(f1_score(y_test,y_pred_scaled_mi))
 
 
 results = pd.DataFrame({
-    "Feature_Set": ["All Features", "Top40"],
+    "Models": ["LG_all", "LG_4040"],
     "Train_Time": [end_train, end_train1],
     "Test_Time": [end_test, end_test1],
     "F1_Score": [f1_all, f1_top40]
 })
+if not os.path.exists("logistic_regression_results.csv"):
+    results.to_csv("logistic_regression_results.csv", index=False)
 
 print(results)
 
 
 fig , ax = plt.subplots(3,1,figsize=(4,6))
-ax[0].bar(results["Feature_Set"],results["Train_Time"],width=0.2)
+ax[0].bar(results["Models"],results["Train_Time"],width=0.2)
 ax[0].set_title("Training time comparsion")
 ax[0].set_ylabel("Time (seconds)")
 
-ax[1].bar(results["Feature_Set"],results["Test_Time"],width=0.2)
+ax[1].bar(results["Models"],results["Test_Time"],width=0.2)
 ax[1].set_title("Testing time comparsion")
 ax[1].set_ylabel("Time (seconds)")
 
-ax[2].bar(results["Feature_Set"],results["F1_Score"],width=0.2)
+ax[2].bar(results["Models"],results["F1_Score"],width=0.2)
 ax[2].set_title("F1 score comparsion")
 ax[2].set_ylabel("F1 score")
 
