@@ -1,102 +1,67 @@
-from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import mutual_info_classif
-from top40 import TOP40
-from sklearn.metrics import classification_report,f1_score,confusion_matrix
 from sklearn.linear_model import LogisticRegression
-import pandas as pd
-import os
-import joblib
-from data_loading import X_test, X_train, y_test,y_train
+from sklearn.metrics import accuracy_score, classification_report, f1_score, confusion_matrix
+from sklearn.preprocessing import StandardScaler
 import time
-import matplotlib.pyplot as plt
-
-
-# Creating a file to store the top40 columns if it doesn't exist
-path1 = "/Users/vijais/Documents/vs code/traffic_classification/top40.py"
-if not os.path.exists(path1):
-    # Finding the mutual correlation between the columns
-    mi_scores = mutual_info_classif(X_train, y_train)
-    # Getting the top 40 columns with highest mutual information
-    mi_series = pd.Series(mi_scores, index=X_train.columns)
-    mi_top40 = mi_series.sort_values(ascending=False).head(40).index.tolist()
-    with open("top40.py", "w") as f:
-        f.write("TOP40 = " + str(mi_top40))
-
-
-# Scaling the features for Logistic Regression
+from data_loading import X_train,X_val, y_train, y_val, X_test, y_test
+import pandas as pd
+import joblib
+import os
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
 X_test_scaled = scaler.transform(X_test)
+# print(pd.Series(y_train).value_counts())
 
-scaler1 = StandardScaler()
-X_train_mi_scaled = scaler1.fit_transform(X_train[TOP40])
-X_test_mi_scaled =scaler1.transform(X_test[TOP40])
-
-
-
-
-
-# Training the LogisticRegression model with scaled features and loading model
-start_train = time.time()
-model_scaled = LogisticRegression(max_iter=200)
-model_scaled.fit(X_train_scaled, y_train)
-end_train = time.time() - start_train
-# joblib.dump(model_scaled, "logistic_regression_model_scaled.pkl")
-
-# model_scaled=joblib.load("logistic_regression_model_scaled.pkl")
-
-# Predicting and evaluating the model with scaled features
-start_test = time.time()
-y_pred_scaled = model_scaled.predict(X_test_scaled)
-end_test = time.time() - start_test                                                                                                                                         
-print("Logistic Regression Model (Scaled Features)")
-print(classification_report(y_test, y_pred_scaled))
-
-f1_all=(f1_score(y_test,y_pred_scaled))
-
-# Training the LogisticRegression model with top40 scaled features and loading model
-
-start_train1 = time.time()
-model_scaled_mi = LogisticRegression(max_iter=200)
-model_scaled_mi.fit(X_train_mi_scaled, y_train)
-# joblib.dump(model_scaled_mi, "logistic_regression_model_mi_scaled.pkl")
-end_train1 = time.time() - start_train1
-
-# model_scaled_mi=joblib.load("logistic_regression_model_mi_scaled.pkl")
-
-# Predicting and evaluating the model with scaled features
-start_test1 = time.time()
-y_pred_scaled_mi = model_scaled_mi.predict(X_test_mi_scaled)
-end_test1= time.time() - start_test1
-print("Logistic Regression Model with top 40 (Scaled Features) ")
-print(classification_report(y_test, y_pred_scaled_mi))
-f1_top40=(f1_score(y_test,y_pred_scaled_mi))
+# from imblearn.over_sampling import SMOTE
+# smote = SMOTE(
+#     sampling_strategy={1:20000,8:5300,9:20500,10:7200,5:8600,6:9000,7:10000,3:13000,2:95000},  # oversample all minority classe
+#     random_state=42
+# )
+# X_train_smote, y_train_smote = smote.fit_resample(X_train_scaled, y_train)
+# import pandas as pd
+# print(pd.Series(y_train_smote).value_counts())
 
 
-results = pd.DataFrame({
-    "Models": ["LG_all", "LG_4040"],
-    "Train_Time": [end_train, end_train1],
-    "Test_Time": [end_test, end_test1],
-    "F1_Score": [f1_all, f1_top40]
-})
-if not os.path.exists("logistic_regression_results.csv"):
-    results.to_csv("logistic_regression_results.csv", index=False)
+# start_time = time.time()
+# log_model = LogisticRegression(
+#     max_iter=1000,
+#     random_state=42,
+#     C=0.5
+# )
+# log_model.fit(X_train_smote, y_train_smote)
+# training_time = time.time() - start_time
+# print("Training Time:", training_time)
+# joblib.dump(log_model, "logistic_regression_model.pkl")
 
-print(results)
+# start_time1 = time.time()
+# y_pred = log_model.predict(X_val_scaled)
+# testing_time= time.time() - start_time1
+# print("Testing Time:", testing_time)
 
 
-fig , ax = plt.subplots(3,1,figsize=(4,6))
-ax[0].bar(results["Models"],results["Train_Time"],width=0.2)
-ax[0].set_title("Training time comparsion")
-ax[0].set_ylabel("Time (seconds)")
 
-ax[1].bar(results["Models"],results["Test_Time"],width=0.2)
-ax[1].set_title("Testing time comparsion")
-ax[1].set_ylabel("Time (seconds)")
+# accuracy = accuracy_score(y_val, y_pred)
+# macro_f1 = f1_score(y_val, y_pred, average='macro')
+# weighted_f1 = f1_score(y_val, y_pred, average='weighted')
 
-ax[2].bar(results["Models"],results["F1_Score"],width=0.2)
-ax[2].set_title("F1 score comparsion")
-ax[2].set_ylabel("F1 score")
+# print("Accuracy:", accuracy)
+# print("Macro F1:", macro_f1)
+# print("Weighted F1:", weighted_f1)
+# print("\nClassification Report:\n")
+# print(classification_report(y_val, y_pred))
 
-plt.tight_layout()
-plt.show()
+
+log_model1=joblib.load("logistic_regression_model.pkl")
+y_test_pred = log_model1.predict(X_test_scaled)
+accuracy_test = accuracy_score(y_test, y_test_pred)
+macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
+weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')      
+print(classification_report(y_test, y_test_pred))
+print("Accuracy:", accuracy_test)
+print("Macro F1:", macro_f1_test)
+print("Weighted F1:", weighted_f1_test)
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_test_pred))
+
+
+
