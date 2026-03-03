@@ -4,9 +4,6 @@ from sqlalchemy import create_engine
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-import numpy as np
 import joblib
 
 #checking for the dataset in the given path, if not found creating the dataset from database by filtering 900k rows from 2.8M rows
