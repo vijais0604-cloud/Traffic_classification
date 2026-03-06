@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, f1_score, classification_report
 from data_loading import X_train, y_train, X_test, y_test, X_val, y_val
 import joblib
 import pandas as pd
-import matplotlib.pyplot as plt
+import os
 
 # -----------------------------
 # Model Initialization
@@ -36,7 +36,8 @@ xgb_model = XGBClassifier(
 start_train = time.time()
 xgb_model.fit(X_train, y_train)   # DO NOT scale for XGB
 end_train = time.time()
-joblib.dump(xgb_model, "xgb_model.pkl")
+if not os.path.exists("xgb_model.pkl"):
+    joblib.dump(xgb_model, "xgb_model.pkl")
 # -----------------------------
 # Testing
 # -----------------------------
@@ -61,26 +62,16 @@ print("Weighted F1:", weighted_f1)
 print("\nClassification Report:\n")
 print(classification_report(y_val, y_pred))
 
-# ------------------------------
-# Model Performance Visualization
-# -------------------------------
-result = pd.DataFrame({"Model": ["XGBoost"],
-                     "Training time": [end_train - start_train],
-                     "Testing time": [end_test - start_test],
-                     "Accuracy": [accuracy],
-                     "Macro_f1": [macro_f1],
-                     "F1 score": [weighted_f1]})
 
-print(result)
+result=pd.DataFrame({"Model":["XGBoost"],
+                     "Training time":[end_train - start_train],
+                     "Testing time":[end_test - start_test],
+                     "Accuracy":[accuracy],
+                     "Macro_f1":[macro_f1],
+                     "F1 score":[weighted_f1]})
+if not os.path.exists("xgb_result.csv"):
+    result.to_csv("xgb_result.csv")
 
-fig, axs = plt.subplots(len(result.columns), 1, figsize=(6, 8 * len(result.columns)))
-for i, column in enumerate(result.columns):
-    axs[i].bar(result["Model"], result[column], label=column)
-    axs[i].set_title(column)
-    axs[i].legend()
-
-plt.tight_layout()
-plt.show()
 
 # # -----------------------------
 # # Test Set Evaluation
