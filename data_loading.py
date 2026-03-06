@@ -112,8 +112,7 @@ rare_classes = [
 ]
 
 df["label"] = df["label"].apply(
-    lambda x: "Rare_Attack" if x in rare_classes else x
-)
+    lambda x: "Rare_Attack" if x in rare_classes else x)
 
 # print(df["label"].value_counts())
 # print(df["label"].unique())
