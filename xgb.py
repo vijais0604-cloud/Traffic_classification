@@ -64,18 +64,21 @@ print(classification_report(y_val, y_pred))
 # ------------------------------
 # Model Performance Visualization
 # -------------------------------
-result=pd.DataFrame({"Model":["XGBoost"],
-                     "Training time":[end_train - start_train],
-                     "Testing time":[end_test - start_test],
-                     "Accuracy":[accuracy],
-                     "Macro_f1":[macro_f1],
-                     "F1 score":[weighted_f1]})
+result = pd.DataFrame({"Model": ["XGBoost"],
+                     "Training time": [end_train - start_train],
+                     "Testing time": [end_test - start_test],
+                     "Accuracy": [accuracy],
+                     "Macro_f1": [macro_f1],
+                     "F1 score": [weighted_f1]})
+
 print(result)
-fig , axs = plt.subplots(3,1,figsize=(6,8))
-axs[0].bar(result["Model"],result["Accuracy"],label="Accuracy")
-axs[1].bar(result["Model"],result["Macro_f1"],label="Macro F1")
-axs[2].bar(result["Model"],result["F1 score"],label="Weighted F1")
-plt.title("XGBoost Model Evaluation")
+
+fig, axs = plt.subplots(len(result.columns), 1, figsize=(6, 8 * len(result.columns)))
+for i, column in enumerate(result.columns):
+    axs[i].bar(result["Model"], result[column], label=column)
+    axs[i].set_title(column)
+    axs[i].legend()
+
 plt.tight_layout()
 plt.show()
 
