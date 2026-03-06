@@ -9,15 +9,12 @@ result_random_forest = pd.read_csv("random_forest_result.csv")
 # Concatenate the dataframes
 result_combined = pd.concat([result_xgb, result_logistic_regression, result_random_forest], ignore_index=True)
 
-# Create a comparison plot
-figs = []
+# Create a comparison plot for each column
 for column in result_combined.columns:
-    fig, axs = plt.subplots()
-    axs.bar(result_combined["Model"], result_combined[column], label=column)
-    axs.set_title(column)
-    axs.legend()
-    figs.append(fig)
-
-for i, fig in enumerate(figs):
-    fig.tight_layout()
-    fig.show()
+    if column != "Model":  # Skip the "Model" column
+        fig, axs = plt.subplots()
+        axs.bar(result_combined["Model"], result_combined[column], label=column)
+        axs.set_title(column)
+        axs.legend()
+        plt.tight_layout()
+        plt.show()
