@@ -79,22 +79,20 @@ axs.set_title("Model Performance Metrics")
 axs.set_ylabel("Score")
 axs.legend()
 plt.ylim(0, 1)
-plt.tight_layout
+plt.tight_layout()
 plt.show()  
 
+# -----------------------------
+# Test Set Evaluation
+# -----------------------------
 
-
-# # -----------------------------
-# # Test Set Evaluation
-# # -----------------------------
-
-# rf_model_loaded = joblib.load("xgb_model.pkl")
-# y_test_pred = rf_model_loaded.predict(X_test)
-# accuracy_test = accuracy_score(y_test, y_test_pred)
-# macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
-# weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')
-# print("\nTest Set Classification Report:\n")
-# print(classification_report(y_test, y_test_pred))
-# print("Test Accuracy:", accuracy_test)
-# print("Test Macro F1:", macro_f1_test)
-# print("Test Weighted F1:", weighted_f1_test)
+rf_model_loaded = joblib.load("xgb_model.pkl")
+y_test_pred = rf_model_loaded.predict(X_test)
+accuracy_test = accuracy_score(y_test, y_test_pred)
+macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
+weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')
+print("\nTest Set Classification Report:\n")
+print(classification_report(y_test, y_test_pred))
+print("Test Accuracy:", accuracy_test)
+print("Test Macro F1:", macro_f1_test)
+print("Test Weighted F1:", weighted_f1_test)
