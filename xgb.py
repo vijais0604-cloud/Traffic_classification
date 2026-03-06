@@ -70,29 +70,26 @@ result=pd.DataFrame({"Model":["XGBoost"],
                      "Accuracy":[accuracy],
                      "Macro_f1":[macro_f1],
                      "F1 score":[weighted_f1]})
-
-fig , axs = plt.subplots(3,1)
-axs[0].bar(result["Model"],result["Accuracy"],color="blue",label="Accuracy")
-axs[1].bar(result["Model"],result["Macro_f1"],color="orange",label="Macro F1")
-axs[2].bar(result["Model"],result["F1 score"],color="green",label="Weighted F1")
-axs.set_title("Model Performance Metrics")
-axs.set_ylabel("Score")
-axs.legend()
-plt.ylim(0, 1)
+print(result)
+fig , axs = plt.subplots(3,1,figsize=(6,8))
+axs[0].bar(result["Model"],result["Accuracy"],label="Accuracy")
+axs[1].bar(result["Model"],result["Macro_f1"],label="Macro F1")
+axs[2].bar(result["Model"],result["F1 score"],label="Weighted F1")
+plt.title("XGBoost Model Evaluation")
 plt.tight_layout()
-plt.show()  
+plt.show()
 
-# -----------------------------
-# Test Set Evaluation
-# -----------------------------
+# # -----------------------------
+# # Test Set Evaluation
+# # -----------------------------¯
 
-rf_model_loaded = joblib.load("xgb_model.pkl")
-y_test_pred = rf_model_loaded.predict(X_test)
-accuracy_test = accuracy_score(y_test, y_test_pred)
-macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
-weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')
-print("\nTest Set Classification Report:\n")
-print(classification_report(y_test, y_test_pred))
-print("Test Accuracy:", accuracy_test)
-print("Test Macro F1:", macro_f1_test)
-print("Test Weighted F1:", weighted_f1_test)
+# rf_model_loaded = joblib.load("xgb_model.pkl")
+# y_test_pred = rf_model_loaded.predict(X_test)
+# accuracy_test = accuracy_score(y_test, y_test_pred)
+# macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
+# weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')
+# print("\nTest Set Classification Report:\n")
+# print(classification_report(y_test, y_test_pred))
+# print("Test Accuracy:", accuracy_test)
+# print("Test Macro F1:", macro_f1_test)
+# print("Test Weighted F1:", weighted_f1_test)
