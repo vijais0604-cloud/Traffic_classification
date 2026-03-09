@@ -77,8 +77,8 @@ if not os.path.exists("xgb_result.csv"):
 # # Test Set Evaluation
 # # -----------------------------¯
 
-# rf_model_loaded = joblib.load("xgb_model.pkl")
-# y_test_pred = rf_model_loaded.predict(X_test)
+# xg_model_loaded = joblib.load("xgb_model.pkl")
+# y_test_pred = xg_model_loaded.predict(X_test)
 # accuracy_test = accuracy_score(y_test, y_test_pred)
 # macro_f1_test = f1_score(y_test, y_test_pred, average='macro')
 # weighted_f1_test = f1_score(y_test, y_test_pred, average='weighted')
