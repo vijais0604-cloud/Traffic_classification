@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 result_xgb = pd.read_csv("xgb_result.csv")
 result_logistic_regression = pd.read_csv("logistic_regression_result.csv")
 result_random_forest = pd.read_csv("random_forest_result.csv")
+result_lg = pd.read_csv("lgb_result.csv")
 
 # Concatenate the dataframes
-result_combined = pd.concat([result_xgb, result_logistic_regression, result_random_forest], ignore_index=True)
+result_combined = pd.concat([result_xgb, result_logistic_regression, result_random_forest, result_lg], ignore_index=True)
 
 print(result_combined)
 
