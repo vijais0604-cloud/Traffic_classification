@@ -3,16 +3,16 @@ import matplotlib.pyplot as plt
 import os
 
 # Load result dataframes from each model
-result_logistic_regression = pd.read_csv("logistic_regression_result.csv")
-result_random_forest = pd.read_csv("random_forest_result.csv")
-result_lg = pd.read_csv("lgb_result.csv")
-result_xgb = pd.read_csv("xgb_result_tuned.csv")
+result_logistic_regression = pd.read_csv("results/logistic_regression_result.csv")
+result_random_forest = pd.read_csv("results/random_forest_result.csv")
+result_lg = pd.read_csv("results/lgb_result.csv")
+result_xgb = pd.read_csv("results/xgb_result_tuned.csv")
 
-lr=os.path.getsize("logistic_regression_model.pkl")/(1024 * 1024)
-rf=os.path.getsize("random_forest_model.pkl")/(1024 * 1024)
-lg=os.path.getsize("lightgbm_model.pkl")/(1024 * 1024)
-xgb=os.path.getsize("xgb_model_tuned.pkl")/(1024 * 1024)
-xgb_base=os.path.getsize("xgb_model.pkl")/(1024 * 1024)
+lr=os.path.getsize("others/logistic_regression_model.pkl")/(1024 * 1024)
+rf=os.path.getsize("others/random_forest_model.pkl")/(1024 * 1024)
+lg=os.path.getsize("others/lightgbm_model.pkl")/(1024 * 1024)
+xgb=os.path.getsize("models/xgb_model_tuned.pkl")/(1024 * 1024)
+xgb_base=os.path.getsize("others/xgb_model.pkl")/(1024 * 1024)
 # Add size of model column
 # Concatenate the dataframes
 result_combined = pd.concat([result_xgb, result_logistic_regression, result_random_forest, result_lg], ignore_index=True)
