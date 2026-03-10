@@ -2,7 +2,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, f1_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 import time
-from data_loading import X_train,X_val, y_train, y_val, X_test, y_test
+from training.data_loading import X_train,X_val, y_train, y_val, X_test, y_test
 import pandas as pd
 import joblib
 import os
@@ -32,8 +32,8 @@ log_model.fit(X_train_smote, y_train_smote)
 training_time = time.time() - start_time
 print("Training Time:", training_time)
 
-if not os.path.exists("logistic_regression_model.pkl"):
-    joblib.dump(log_model, "logistic_regression_model.pkl")
+if not os.path.exists("others/logistic_regression_model.pkl"):
+    joblib.dump(log_model, "others/logistic_regression_model.pkl")
 
 start_time1 = time.time()
 y_pred = log_model.predict(X_val_scaled)
@@ -59,8 +59,8 @@ result=pd.DataFrame({"Model":["Logistics Regression"],
                      "Accuracy":[accuracy],
                      "Macro_f1":[macro_f1],
                      "F1 score":[weighted_f1]})
-if not os.path.exists("logistic_regression_result.csv"):
-    result.to_csv("logistic_regression_result.csv")
+if not os.path.exists("results/logistic_regression_result.csv"):
+    result.to_csv("results/logistic_regression_result.csv")
 
 
 # log_model1=joblib.load("logistic_regression_model.pkl")

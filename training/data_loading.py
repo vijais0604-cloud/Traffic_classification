@@ -164,14 +164,14 @@ df = df.drop(columns=columns_to_drop)
 
 
 
-if not os.path.exists("label_encoder.pkl"):
+if not os.path.exists("models/label_encoder.pkl"):
     from sklearn.preprocessing import LabelEncoder
     le = LabelEncoder()
     df["label_encoded"] = le.fit_transform(df["label"])
     label_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
-    joblib.dump(le, "label_encoder.pkl")
+    joblib.dump(le, "models/label_encoder.pkl")
 else:
-    le = joblib.load("label_encoder.pkl")
+    le = joblib.load("models/label_encoder.pkl")
 
 df["label_encoded"] = le.transform(df["label"])
 
@@ -222,3 +222,9 @@ train_balanced = train_balanced.sample(frac=1, random_state=42)
 # Separate again
 X_train = train_balanced.drop(columns=["label"])
 y_train = train_balanced["label"]
+
+features = pd.Series(X_train.columns)
+print(features)
+import os 
+if not os.path.exists("models/features.pkl"):
+    joblib.dump(features, "models/features.pkl")

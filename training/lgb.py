@@ -3,7 +3,7 @@ import joblib
 from lightgbm import LGBMClassifier
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 import os
-from data_loading import X_train, y_train, X_val, y_val
+from training.data_loading import X_train, y_train, X_val, y_val
 import pandas as pd
 
 # Model
@@ -20,8 +20,8 @@ start_train = time.time()
 lgb_model.fit(X_train, y_train)
 end_train = time.time()
 
-if not os.path.exists("lightgbm_model.pkl"):
-    joblib.dump(lgb_model, "lightgbm_model.pkl")
+if not os.path.exists("others/lightgbm_model.pkl"):
+    joblib.dump(lgb_model, "others/lightgbm_model.pkl")
 
 # Testing
 start_test = time.time()
@@ -48,8 +48,8 @@ result=pd.DataFrame({"Model":["lightGBM"],
                      "Accuracy":[accuracy],
                      "Macro_f1":[macro_f1],
                      "F1 score":[weighted_f1]})
-if not os.path.exists("lgb_result.csv"):
-    result.to_csv("lgb_result.csv")
+if not os.path.exists("results/lgb_result.csv"):
+    result.to_csv("results/lgb_result.csv")
 
 
 # # -----------------------------

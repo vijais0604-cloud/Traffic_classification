@@ -2,7 +2,7 @@ import time
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, classification_report
-from data_loading import X_train, y_train, X_test, y_test,X_val, y_val
+from training.data_loading import X_train, y_train, X_test, y_test,X_val, y_val
 import joblib
 import pandas as pd
 import os
@@ -27,8 +27,8 @@ rf_model = RandomForestClassifier(
 start_train = time.time()
 rf_model.fit(X_train, y_train)   # DO NOT scale for RF
 end_train = time.time()
-if not os.path.exists("random_forest_model.pkl"):
-    joblib.dump(rf_model, "random_forest_model.pkl")
+if not os.path.exists("others/random_forest_model.pkl"):
+    joblib.dump(rf_model, "others/random_forest_model.pkl")
 # -----------------------------
 # Testing
 # -----------------------------
@@ -61,8 +61,8 @@ result=pd.DataFrame({"Model":["Random forest"],
                      "Accuracy":[accuracy],
                      "Macro_f1":[macro_f1],
                      "F1 score":[weighted_f1]})
-if not os.path.exists("random_forest_result.csv"):
-    result.to_csv("random_forest_result.csv")
+if not os.path.exists("results/random_forest_result.csv"):
+    result.to_csv("results/random_forest_result.csv")
 
 
 # rf_model_loaded = joblib.load("random_forest_model.pkl")

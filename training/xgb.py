@@ -3,7 +3,7 @@ import numpy as np
 from xgboost import XGBClassifier
 from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold
 from sklearn.metrics import accuracy_score, f1_score, classification_report
-from data_loading import X_train, y_train, X_test, y_test, X_val, y_val
+from training.data_loading import X_train, y_train, X_test, y_test, X_val, y_val
 import joblib
 import pandas as pd
 import os
@@ -199,8 +199,8 @@ print(f"{'='*60}\n")
 # ============================================================
 # SAVE BEST MODEL
 # ============================================================
-if not os.path.exists("xgb_model_tuned.pkl"):
-    joblib.dump(best_xgb, "xgb_model_tuned.pkl")
+if not os.path.exists("models/xgb_model_tuned.pkl"):
+    joblib.dump(best_xgb, "models/xgb_model_tuned.pkl")
     print("Saved tuned model → xgb_model_tuned.pkl")
 
 # ============================================================
@@ -216,6 +216,6 @@ results = pd.DataFrame({
 
 print(results.to_string(index=False))
 
-if not os.path.exists("xgb_result_tuned.csv"):
-    results.to_csv("xgb_result_tuned.csv", index=False)
+if not os.path.exists("results/xgb_result_tuned.csv"):
+    results.to_csv("results/xgb_result_tuned.csv", index=False)
     print("\nSaved results → xgb_result_tuned.csv")
