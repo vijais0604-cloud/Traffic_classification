@@ -5,8 +5,8 @@ import numpy as np
 app = FastAPI()
 
 # Load artifacts
-model = joblib.load("models/xgb_model_tuned.pkl")
-feature_columns = joblib.load("models/features.pkl")
+model = joblib.load("models/xgb_model_f15.pkl")
+feature_columns = joblib.load("models/features_f15.pkl")
 label_encoder = joblib.load("models/label_encoder.pkl")
 
 
