@@ -223,8 +223,3 @@ train_balanced = train_balanced.sample(frac=1, random_state=42)
 X_train = train_balanced.drop(columns=["label"])
 y_train = train_balanced["label"]
 
-features = pd.Series(X_train.columns)
-print(features)
-import os 
-if not os.path.exists("models/features.pkl"):
-    joblib.dump(features, "models/features.pkl")

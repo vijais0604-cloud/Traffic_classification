@@ -4,7 +4,7 @@ import time
 import random
 
 # Load validation dataset
-df = pd.read_csv("deployment/X_val.csv")   # or use any CSV with the 42 features
+df = pd.read_csv("deployment/X_test-top15.csv")   # or use any CSV with the 42 features
 
 API_URL = "http://127.0.0.1:8000/predict"
 
