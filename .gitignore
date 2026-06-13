@@ -2,7 +2,7 @@
 *.csv
 *.db
 *.parquet
-*.pkl
+
 
 # Images / plots
 *.png
