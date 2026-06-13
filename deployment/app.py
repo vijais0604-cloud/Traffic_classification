@@ -9,7 +9,25 @@ model = joblib.load("models/xgb_model_f15.pkl")
 feature_columns = joblib.load("models/features_f15.pkl")
 label_encoder = joblib.load("models/label_encoder.pkl")
 
-
+@app.get("/")
+def main():
+    return { "Features required" : [
+        "init_win_bytes_backward",
+        "init_win_bytes_forward",
+        "min_seg_size_forward",
+        "flow_iat_min",
+        "fwd_iat_min",
+        "bwd_packet_length_mean",
+        "bwd_packet_length_max",
+        "flow_iat_max",
+        "fwd_packet_length_max",
+        "fwd_iat_mean",
+        "flow_duration",
+        "fwd_iat_std",
+        "flow_iat_mean",
+        "flow_packets_per_s",
+        "flow_bytes_per_s"
+        ]}
 @app.post("/predict")
 def predict(flow_features: dict):
 
