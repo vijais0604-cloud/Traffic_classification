@@ -2,7 +2,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, f1_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 import time
-from training.data_loading import X_train,X_val, y_train, y_val, X_test, y_test
+from data_loading import X_train,X_val, y_train, y_val, X_test, y_test
 import pandas as pd
 import joblib
 import os
