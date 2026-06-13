@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import joblib
 import numpy as np
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -11,7 +12,7 @@ label_encoder = joblib.load("models/label_encoder.pkl")
 
 @app.get("/")
 def main():
-    return { "Features required" : [
+    return {"Features required" : [
         "init_win_bytes_backward",
         "init_win_bytes_forward",
         "min_seg_size_forward",
@@ -35,7 +36,13 @@ def predict(flow_features: dict):
     missing = [col for col in feature_columns if col not in flow_features]
 
     if missing:
-        return {"error": f"Missing features: {missing}"}
+        raise HTTPException(
+
+        status_code=400,
+
+        detail=f"Missing features: {missing}"
+
+    )
 
     ordered_features = [flow_features[col] for col in feature_columns]
 
