@@ -16,7 +16,7 @@ __pycache__/
 # Virtual environment
 .venv/
 .env
-
+others/
 .DS_Store
 
 
