@@ -20,7 +20,6 @@ The system is designed to be:
   - `flow_generator.py` - converts `traffic.pcap` into `flows.csv` using `cicflowmeter`.
   - `traffic_capture.py` - captures live traffic to `traffic.pcap` using `tcpdump`.
   - `predictor.py` - sends `flows.csv` to the FastAPI `/predict` endpoint to receive attack predictions.
-  - `X_test-top15.csv` - example test flow dataset using the selected 15 features.
   - `test/` - deployment tests for application behavior.
 
 - `training/`
@@ -30,9 +29,8 @@ The system is designed to be:
   - `lgb.py`, `logistic_regression.py`, `random_forest.py`, `xgb.py` - training scripts and experiments for individual models.
 
 - `models/` - saved model artifacts used by deployment and inference.
-- `results/` - output metrics and performance comparison CSV files.
+- `results/` - output metrics and performance comparison CSV files. Run the programs in the training folder to get results.
 - `inference/` - inference utilities and example data files.
-- `dockerfile` - container build definition.
 - `requirements.txt` - Python dependencies required to run the application.
 - `requirements_train.txt` - training-specific dependencies if separate installation is desired.
 
@@ -111,6 +109,8 @@ This script:
 - exports `deployment/X_test-top15.csv` for API testing
 
 ### Compare models
+
+To compare results all the models needs to trained and stored in the results folder. You can just the entire training folder once and the results folder will be created with all the CSV files needed to run comparison.py
 
 ```bash
 python training/comparison.py

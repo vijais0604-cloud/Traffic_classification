@@ -11,7 +11,6 @@ fastapi==0.135.1
 fonttools==4.61.1
 h11==0.16.0
 idna==3.11
-imbalanced-learn==0.14.1
 joblib==1.5.3
 kiwisolver==1.4.9
 
@@ -22,16 +21,13 @@ numpy==2.4.2
 packaging==26.0
 pandas==3.0.0
 pillow==12.1.1
-psycopg2==2.9.11
-pyarrow==23.0.0
-pydantic==2.12.5
+
 pydantic-core==2.41.5
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
 requests==2.32.5
 
 six==1.17.0
-sklearn-compat==0.1.5
 slicer==0.0.8
 starlette==0.52.1
 threadpoolctl==3.6.0
