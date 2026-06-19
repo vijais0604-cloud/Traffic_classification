@@ -43,3 +43,5 @@ uvicorn==0.41.0
 xgboost==3.2.0
 pytest
 httpx
+git+https://github.com/vijais0604-cloud/cicflowmeter.git
+python-multipart
