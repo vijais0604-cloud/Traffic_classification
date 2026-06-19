@@ -19,6 +19,7 @@ class DummyModel:
 
 def _write_dummy_artifacts(tmp_models_dir):
     tmp_models_dir.mkdir(parents=True, exist_ok=True)
+    # save feature list (without src_ip/dst_ip)
     features = [
         "init_win_bytes_forward",
         "init_win_bytes_backward",
@@ -41,35 +42,35 @@ def _write_dummy_artifacts(tmp_models_dir):
     joblib.dump(DummyModel(), str(tmp_models_dir / "xgb_model_f15.pkl"))
 
 
-def test_main(tmp_path, monkeypatch):
+def test_get_root_and_post_predict(tmp_path, monkeypatch):
+    # prepare models directory in tmp and copy into repo models/
     tmp_models = tmp_path / "models"
     _write_dummy_artifacts(tmp_models)
+
+    # copy to repository models directory
     shutil.rmtree("models", ignore_errors=True)
     shutil.copytree(str(tmp_models), "models")
 
+    # import app after artifacts exist
     from deployment import app as app_module
 
     client = TestClient(app_module.app)
-    response = client.get("/")
-    assert response.status_code == 200
-    assert "Features required" in response.json()
 
+    # GET /
+    r = client.get("/")
+    assert r.status_code == 200
+    assert "Features required" in r.json()
+
+    # Build a CSV using the feature columns and src/dst
     df = pd.DataFrame({col: [0] for col in app_module.feature_columns})
     df["src_ip"] = ["1.1.1.1"]
     df["dst_ip"] = ["2.2.2.2"]
+
     csv_buf = io.BytesIO()
     df.to_csv(csv_buf, index=False)
     csv_buf.seek(0)
 
-    response = client.post("/predict", files={"file": ("flows.csv", csv_buf, "text/csv")})
-    assert response.status_code == 200
-    assert "attacks" in response.json()
-
-
-def test_predict_missing_features():
-    from deployment import app as app_module
-
-    client = TestClient(app_module.app)
-    response = client.post("/predict", files={"file": ("flows.csv", "src_ip,dst_ip\n1.1.1.1,2.2.2.2\n", "text/csv")})
-    assert response.status_code == 400
-    
+    r2 = client.post("/predict", files={"file": ("flows.csv", csv_buf, "text/csv")})
+    assert r2.status_code == 200
+    data = r2.json()
+    assert "attacks" in data

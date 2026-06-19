@@ -1,6 +1,12 @@
-from traffic_capture import capture
-from flow_generator import generate_csv
-from predictor import predict
+try:
+    from deployment.traffic_capture import capture
+    from deployment.flow_generator import generate_csv
+    from deployment.predictor import predict
+except ImportError:
+    from traffic_capture import capture
+    from flow_generator import generate_csv
+    from predictor import predict
+
 
 def run_pipeline():
 
