@@ -1,5 +1,6 @@
 import io
 import shutil
+import sys
 import joblib
 import pandas as pd
 from fastapi.testclient import TestClient
@@ -44,8 +45,8 @@ def _write_dummy_artifacts(tmp_models_dir):
 def test_main(tmp_path, monkeypatch):
     tmp_models = tmp_path / "models"
     _write_dummy_artifacts(tmp_models)
-    shutil.rmtree("models", ignore_errors=True)
-    shutil.copytree(str(tmp_models), "models")
+    monkeypatch.setenv("MODEL_DIR", str(tmp_models))
+    sys.modules.pop("deployment.app", None)
 
     from deployment import app as app_module
 
@@ -66,7 +67,12 @@ def test_main(tmp_path, monkeypatch):
     assert "attacks" in response.json()
 
 
-def test_predict_missing_features():
+def test_predict_missing_features(tmp_path, monkeypatch):
+    tmp_models = tmp_path / "models"
+    _write_dummy_artifacts(tmp_models)
+    monkeypatch.setenv("MODEL_DIR", str(tmp_models))
+    sys.modules.pop("deployment.app", None)
+
     from deployment import app as app_module
 
     client = TestClient(app_module.app)

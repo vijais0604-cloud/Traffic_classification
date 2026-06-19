@@ -1,5 +1,6 @@
 import io
 import shutil
+import sys
 import joblib
 import pandas as pd
 from fastapi.testclient import TestClient
@@ -43,13 +44,11 @@ def _write_dummy_artifacts(tmp_models_dir):
 
 
 def test_get_root_and_post_predict(tmp_path, monkeypatch):
-    # prepare models directory in tmp and copy into repo models/
+    # prepare models directory in tmp and use it for the app
     tmp_models = tmp_path / "models"
     _write_dummy_artifacts(tmp_models)
-
-    # copy to repository models directory
-    shutil.rmtree("models", ignore_errors=True)
-    shutil.copytree(str(tmp_models), "models")
+    monkeypatch.setenv("MODEL_DIR", str(tmp_models))
+    sys.modules.pop("deployment.app", None)
 
     # import app after artifacts exist
     from deployment import app as app_module

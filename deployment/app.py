@@ -1,18 +1,24 @@
-from fastapi import FastAPI,  UploadFile, File
+import os
+from pathlib import Path
+
+from fastapi import FastAPI, UploadFile, File, HTTPException
 import pandas as pd
 import joblib
 import numpy as np
-from fastapi import HTTPException
 
 app = FastAPI()
 
+# Resolve artifact directory from environment or default relative path
+MODEL_DIR = Path(os.environ.get("MODEL_DIR", Path(__file__).resolve().parent.parent / "models"))
+
 # Load artifacts
-model = joblib.load("models/xgb_model_f15.pkl")
-feature_columns = joblib.load("models/features_f15.pkl")
-label_encoder = joblib.load("models/label_encoder.pkl")
+model = joblib.load(MODEL_DIR / "xgb_model_f15.pkl")
+feature_columns = joblib.load(MODEL_DIR / "features_f15.pkl")
+label_encoder = joblib.load(MODEL_DIR / "label_encoder.pkl")
 
 @app.get("/")
 def main():
+    
     return {
         "Features required" : [
         "init_win_bytes_backward",
