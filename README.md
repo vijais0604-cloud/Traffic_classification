@@ -35,6 +35,29 @@ The system is designed to be:
 - `requirements_train.txt` - training-specific dependencies if separate installation is desired.
 
 ---
+## 📊 Dataset Setup
+
+The training code requires the compressed `traffic_ml_filtered.parquet` dataset (a filtered version of the CIC-IDS-2017 dataset). Because of its file size (~264 MB), it is hosted externally on our GitHub Releases page rather than tracked directly in the repository history.
+
+You can load and use this dataset in two ways:
+
+### Option 1: Load Dynamically via Code (Recommended)
+You can read the dataset directly into your Python scripts or Jupyter Notebooks using `pandas` or `polars` without downloading it manually:
+
+```python
+import pandas as pd
+
+# Direct download link from the release asset
+dataset_url = "https://github.com/vijais0604-cloud/Traffic_classification/releases/download/data-v1/traffic_ml_filtered.parquet"
+print("Loading dataset...")
+df = pd.read_parquet(dataset_url)
+print(f"Dataset loaded successfully! Shape: {df.shape}")
+```
+### Option 2: Manual Download
+- Head over to the Data-v1 (https://github.com/vijais0604-cloud/Traffic_classification/releases/download/data-v1/traffic_ml_filtered.parquet)
+ Release Page.
+- Move the downloaded file into your local project directory (e.g., inside a data/ folder) before running the training scripts.
+
 
 ## Clone and run the project
 
